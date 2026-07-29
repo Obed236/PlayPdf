@@ -120,3 +120,12 @@ h2 {
         flex: 1;
     }
 }
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
