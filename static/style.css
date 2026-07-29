@@ -1,0 +1,59 @@
+body {
+
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+
+}
+
+
+.container {
+
+    width: 80%;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    margin-top: 40px;
+    border-radius: 15px;
+
+}
+
+
+h1 {
+
+    text-align: center;
+
+}
+
+
+button {
+
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+
+}
+
+
+.box {
+
+    background: #eee;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 300px;
+    overflow: auto;
+
+}
+
+
+.texte {
+
+    line-height: 1.6;
+
+}
+
+
+.buttons {
+
+    margin-top: 20px;
+
+}

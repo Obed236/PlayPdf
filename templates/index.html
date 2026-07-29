@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>PlayPdf</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+        <h1>📚 PlayPdf</h1>
+
+        <p>
+            Transforme tes PDF en livres audio intelligents.
+        </p>
+
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <input type="file" name="pdf" accept=".pdf" required>
+
+            <button>
+                Analyser le PDF
+            </button>
+
+        </form>
+
+
+
+        <h2>Résumé IA</h2>
+
+        <div class="box">
+
+            {{resume}}
+
+        </div>
+
+
+
+        <div class="buttons">
+
+            <button onclick="lire()">
+                ▶ Lire
+            </button>
+
+
+            <button onclick="pause()">
+                ⏸ Pause
+            </button>
+
+
+            <button onclick="reprendre()">
+                ▶ Reprendre
+            </button>
+
+
+        </div>
+
+
+
+        <h2>Texte extrait</h2>
+
+        <div class="box texte">
+
+            {{texte}}
+
+        </div>
+
+
+    </div>
+
+
+    <script src="/static/script.js"></script>
+
+</body>
+
+</html>
