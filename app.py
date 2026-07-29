@@ -3,19 +3,25 @@ import fitz
 import os
 from gtts import gTTS
 
+
 app = Flask(__name__)
 
+
 UPLOAD_FOLDER = "uploads"
-AUDIO_FOLDER = "static"
+AUDIO_FOLDER = "static/audio"
+
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(AUDIO_FOLDER, exist_ok=True)
 
+
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
-# Extraction du texte du PDF
+
+# Extraction PDF
 def extraire_pdf(chemin):
+
     texte = ""
 
     document = fitz.open(chemin)
@@ -28,31 +34,66 @@ def extraire_pdf(chemin):
     return texte
 
 
-# Résumé simple (temporaire avant l'IA)
+
+# Résumé simple
 def resume_simple(texte):
+
     phrases = texte.split(".")
 
-    resume = ". ".join(phrases[:5])
-
-    return resume
-
+    return ". ".join(phrases[:5])
 
 # Génération audio
-def generer_audio(texte):
+def generer_audio(texte, mode):
 
-    if not texte.strip():
-        return None
+    if mode == "resume":
 
-    fichier_audio = "static/resume.mp3"
+        fichier = "static/audio/resume.mp3"
 
-    tts = gTTS(
-        text=texte[:3000],
-        lang="fr"
-    )
+        tts = gTTS(
+            text=texte[:3000],
+            lang="fr"
+        )
 
-    tts.save(fichier_audio)
+        tts.save(fichier)
 
-    return fichier_audio
+        return fichier
+
+
+
+    else:
+
+        dossier = "static/audio"
+
+        morceaux = [
+            texte[i:i+3000]
+            for i in range(0, len(texte), 3000)
+        ]
+
+
+        fichiers = []
+
+
+        for index, morceau in enumerate(morceaux):
+
+            fichier = f"{dossier}/livre_{index}.mp3"
+
+
+            tts = gTTS(
+                text=morceau,
+                lang="fr"
+            )
+
+
+            tts.save(fichier)
+
+
+            fichiers.append(fichier)
+
+
+        # Pour cette première version,
+        # on retourne le premier fichier audio
+
+        return fichiers[0]
 
 
 
@@ -62,7 +103,6 @@ def accueil():
     texte = ""
     resume = ""
     audio = None
-
 
     if request.method == "POST":
 
@@ -75,14 +115,28 @@ def accueil():
 
         fichier.save(chemin)
 
-
         texte = extraire_pdf(chemin)
 
         resume = resume_simple(texte)
 
 
-        audio = generer_audio(resume)
+        choix = request.form.get("mode")
 
+
+        if choix == "resume":
+
+            audio = generer_audio(
+                resume,
+                "resume"
+            )
+
+
+        elif choix == "livre":
+
+            audio = generer_audio(
+                texte,
+                "livre"
+            )
 
 
     return render_template(
@@ -95,4 +149,8 @@ def accueil():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+
+    app.run(
+        host="0.0.0.0",
+        port=5000
+    )

@@ -4,72 +4,154 @@
 <head>
 
     <meta charset="UTF-8">
+
     <title>PlayPdf</title>
 
-    <link rel="stylesheet" href="/static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/style.css">
 
 </head>
 
 
 <body>
 
+
     <div class="container">
 
+
         <h1>📚 PlayPdf</h1>
+
 
         <p>
             Transforme tes PDF en livres audio intelligents.
         </p>
 
 
+
         <form method="POST" enctype="multipart/form-data">
+
 
             <input type="file" name="pdf" accept=".pdf" required>
 
-            <button>
+
+
+            <h3>Choisir le mode audio</h3>
+
+
+
+            <label class="option">
+
+                <input type="radio" name="mode" value="resume" checked>
+
+                🎧 Écouter le résumé
+
+            </label>
+
+
+
+            <br><br>
+
+
+
+            <label class="option">
+
+
+                <input type="radio" name="mode" value="complet">
+
+                📖 Lire tout le document
+
+
+            </label>
+
+
+
+            <br><br>
+
+
+
+            <button type="submit">
+
                 Analyser le PDF
+
             </button>
+
+
 
         </form>
 
 
 
-        <h2>Résumé IA</h2>
+
+
+        <h2>📝 Résumé</h2>
+
+
 
         <div class="box">
-            {{resume}}
+
+            {{ resume }}
+
         </div>
+
+
+
 
 
         {% if audio %}
 
-        <h2>🎧 Écouter le résumé</h2>
+
+        <h2>🎧 Lecture audio</h2>
+
 
         <audio controls>
-            <source src="/{{audio}}" type="audio/mpeg">
+
+            <source src="/{{ audio }}" type="audio/mpeg">
+
             Votre navigateur ne supporte pas l'audio.
+
+
         </audio>
+
+
 
         {% endif %}
 
 
 
-        <h2>Texte extrait</h2>
+
+
+
+
+        <h2>📄 Texte extrait</h2>
+
+
 
         <div class="box texte">
-            {{texte}}
+
+            {{ texte }}
+
         </div>
+
 
 
     </div>
 
 
+
+
+
     <footer class="footer">
+
+
         © 2026 PlayPdf — Tous droits réservés.
+
+
     </footer>
 
 
+
 </body>
+
 
 </html>
