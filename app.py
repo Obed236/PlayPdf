@@ -45,55 +45,29 @@ def resume_simple(texte):
 # Génération audio
 def generer_audio(texte, mode):
 
+    dossier = "static/audio"
+    os.makedirs(dossier, exist_ok=True)
+
     if mode == "resume":
 
-        fichier = "static/audio/resume.mp3"
+        chemin = os.path.join(dossier, "resume.mp3")
 
-        tts = gTTS(
-            text=texte[:3000],
-            lang="fr"
-        )
-
-        tts.save(fichier)
-
-        return fichier
-
-
+        contenu = resume_simple(texte)[:5000]
 
     else:
 
-        dossier = "static/audio"
+        chemin = os.path.join(dossier, "livre_complet.mp3")
 
-        morceaux = [
-            texte[i:i+3000]
-            for i in range(0, len(texte), 3000)
-        ]
+        contenu = texte[:5000]
 
+    tts = gTTS(
+        text=contenu,
+        lang="fr"
+    )
 
-        fichiers = []
+    tts.save(chemin)
 
-
-        for index, morceau in enumerate(morceaux):
-
-            fichier = f"{dossier}/livre_{index}.mp3"
-
-
-            tts = gTTS(
-                text=morceau,
-                lang="fr"
-            )
-
-
-            tts.save(fichier)
-
-
-            fichiers.append(fichier)
-
-
-        # Pour cette première version,
-        # on retourne le premier fichier audio
-
-        return fichiers[0]
+    return chemin
 
 
 
@@ -119,25 +93,12 @@ def accueil():
 
         resume = resume_simple(texte)
 
+        mode = request.form.get("mode", "resume")
 
-        choix = request.form.get("mode")
-
-
-        if choix == "resume":
-
-            audio = generer_audio(
-                resume,
-                "resume"
-            )
-
-
-        elif choix == "livre":
-
-            audio = generer_audio(
-                texte,
-                "livre"
-            )
-
+        audio = generer_audio(
+            texte,
+            mode
+        )
 
     return render_template(
         "index.html",
