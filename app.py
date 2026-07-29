@@ -35,26 +35,63 @@ def resume_simple(texte):
     return ". ".join(phrases[:5])
 
 # Génération audio
+# Génération audio
 def generer_audio(texte, mode):
 
     dossier = "static/audio"
     os.makedirs(dossier, exist_ok=True)
 
-    # Sécurité : éviter texte vide
     if not texte or not texte.strip():
         return None
 
+    fichiers = []
+
     if mode == "resume":
-        chemin = os.path.join(dossier, "resume.mp3")
-        contenu = resume_simple(texte)
+
+        morceaux = [
+            resume_simple(texte)
+        ]
 
     else:
-        chemin = os.path.join(dossier, "livre_complet.mp3")
-        contenu = texte
 
-    # gTTS supporte mal les très longs textes
-    contenu = contenu[:4000]
+        # Découpage du document complet
+        taille = 3000
 
+        morceaux = [
+            texte[i:i + taille]
+            for i in range(0, len(texte), taille)
+        ]
+
+
+    for index, morceau in enumerate(morceaux):
+
+        chemin = os.path.join(
+            dossier,
+            f"livre_{index}.mp3"
+        )
+
+        try:
+
+            tts = gTTS(
+                text=morceau,
+                lang="fr"
+            )
+
+            tts.save(chemin)
+
+            fichiers.append(chemin)
+
+        except Exception as e:
+
+            print("Erreur audio :", e)
+            return None
+
+
+    if fichiers:
+
+        return fichiers[0]
+
+    return None
     try:
         tts = gTTS(text=contenu, lang="fr")
         tts.save(chemin)
