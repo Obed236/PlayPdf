@@ -3,21 +3,15 @@ import fitz
 import os
 from gtts import gTTS
 
-
 app = Flask(__name__)
-
 
 UPLOAD_FOLDER = "uploads"
 AUDIO_FOLDER = "static/audio"
 
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(AUDIO_FOLDER, exist_ok=True)
 
-
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
-
 
 # Extraction PDF
 def extraire_pdf(chemin):
@@ -33,8 +27,6 @@ def extraire_pdf(chemin):
 
     return texte
 
-
-
 # Résumé simple
 def resume_simple(texte):
 
@@ -48,28 +40,29 @@ def generer_audio(texte, mode):
     dossier = "static/audio"
     os.makedirs(dossier, exist_ok=True)
 
+    # Sécurité : éviter texte vide
+    if not texte or not texte.strip():
+        return None
+
     if mode == "resume":
-
         chemin = os.path.join(dossier, "resume.mp3")
-
-        contenu = resume_simple(texte)[:5000]
+        contenu = resume_simple(texte)
 
     else:
-
         chemin = os.path.join(dossier, "livre_complet.mp3")
+        contenu = texte
 
-        contenu = texte[:5000]
+    # gTTS supporte mal les très longs textes
+    contenu = contenu[:4000]
 
-    tts = gTTS(
-        text=contenu,
-        lang="fr"
-    )
+    try:
+        tts = gTTS(text=contenu, lang="fr")
+        tts.save(chemin)
+        return chemin
 
-    tts.save(chemin)
-
-    return chemin
-
-
+    except Exception as e:
+        print("Erreur gTTS :", e)
+        return None
 
 @app.route("/", methods=["GET", "POST"])
 def accueil():
@@ -95,10 +88,7 @@ def accueil():
 
         mode = request.form.get("mode", "resume")
 
-        audio = generer_audio(
-            texte,
-            mode
-        )
+        audio = generer_audio(texte, mode)
 
     return render_template(
         "index.html",
@@ -106,8 +96,6 @@ def accueil():
         resume=resume,
         audio=audio
     )
-
-
 
 if __name__ == "__main__":
 
