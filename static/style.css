@@ -1,59 +1,122 @@
-body {
-
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-
+* {
+    box-sizing: border-box;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #1f2937;
+}
 
 .container {
-
-    width: 80%;
-    margin: auto;
+    width: 95%;
+    max-width: 900px;
+    margin: 20px auto;
     background: white;
-    padding: 30px;
-    margin-top: 40px;
-    border-radius: 15px;
-
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-
 
 h1 {
-
     text-align: center;
-
+    margin-top: 0;
+    font-size: 2rem;
 }
 
+p {
+    text-align: center;
+    color: #4b5563;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+input[type="file"] {
+    padding: 12px;
+    border: 2px dashed #94a3b8;
+    border-radius: 12px;
+    background: #f8fafc;
+    width: 100%;
+}
 
 button {
-
-    padding: 10px 20px;
-    margin: 5px;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
-
+    transition: background 0.2s ease;
 }
 
-
-.box {
-
-    background: #eee;
-    padding: 20px;
-    border-radius: 10px;
-    max-height: 300px;
-    overflow: auto;
-
+button:hover {
+    background: #1d4ed8;
 }
-
-
-.texte {
-
-    line-height: 1.6;
-
-}
-
 
 .buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 20px 0;
+}
 
-    margin-top: 20px;
+.box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 10px;
+}
 
+.texte {
+    max-height: 50vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+h2 {
+    margin-top: 24px;
+    font-size: 1.2rem;
+}
+
+/* Tablettes et ordinateurs */
+@media (min-width: 768px) {
+
+    .container {
+        padding: 30px;
+        margin: 40px auto;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+
+    .buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    button {
+        width: auto;
+    }
+
+    form {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    input[type="file"] {
+        flex: 1;
+    }
 }
