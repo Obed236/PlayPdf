@@ -8,11 +8,11 @@
 
     <link rel="stylesheet" href="/static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 
 <body>
-
 
     <div class="container">
 
@@ -38,50 +38,37 @@
         <h2>Résumé IA</h2>
 
         <div class="box">
-
             {{resume}}
-
         </div>
 
 
+        {% if audio %}
 
-        <div class="buttons">
+        <h2>🎧 Écouter le résumé</h2>
 
-            <button onclick="lire()">
-                ▶ Lire
-            </button>
+        <audio controls>
+            <source src="/{{audio}}" type="audio/mpeg">
+            Votre navigateur ne supporte pas l'audio.
+        </audio>
 
-
-            <button onclick="pause()">
-                ⏸ Pause
-            </button>
-
-
-            <button onclick="reprendre()">
-                ▶ Reprendre
-            </button>
-
-
-        </div>
+        {% endif %}
 
 
 
         <h2>Texte extrait</h2>
 
         <div class="box texte">
-
             {{texte}}
-
         </div>
 
 
     </div>
 
 
-    <script src="/static/script.js"></script>
     <footer class="footer">
         © 2026 PlayPdf — Tous droits réservés.
     </footer>
+
 
 </body>
 
