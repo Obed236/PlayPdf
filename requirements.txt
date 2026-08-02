@@ -1,4 +1,4 @@
 Flask
-PyMuPDF
 gunicorn
-gtts
+PyMuPDF
+edge-tts

@@ -2,156 +2,137 @@
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <title>PlayPdf</title>
+    <title>PlayPdf — Transforme tes PDF en audio</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/static/style.css">
+    <meta name="description" content="PlayPdf transforme gratuitement tes documents PDF en résumé et en livre audio.">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 
 <body>
 
-
-    <div class="container">
-
+    <main class="container">
 
         <h1>📚 PlayPdf</h1>
 
-
         <p>
-            Transforme tes PDF en livres audio intelligents.
+            Transforme tes PDF en livres audio clairs et intelligents.
         </p>
 
+        {% if erreur %}
+        <div class="message-erreur" role="alert">
+            {{ erreur }}
+        </div>
+        {% endif %}
 
+        <form method="POST" enctype="multipart/form-data" id="pdf-form">
 
-        <form method="POST" enctype="multipart/form-data">
+            <label for="pdf">
+                Sélectionner un document PDF
+            </label>
 
+            <input type="file" id="pdf" name="pdf" accept="application/pdf,.pdf" required>
 
-            <input type="file" name="pdf" accept=".pdf" required>
-
-            <br>
-
-            <h3>Choisir le mode audio</h3>
-
-
+            <h2>Choisir le mode audio</h2>
 
             <label class="option">
-
                 <input type="radio" name="mode" value="resume" checked>
 
-                🎧 Écouter le résumé
-
+                <span>
+                    🎧 Écouter le résumé
+                </span>
             </label>
-
-
-
-            <br><br>
-
-
 
             <label class="option">
+                <input type="radio" name="mode" value="livre">
 
-
-                <input type="radio" name="mode" value="complet">
-
-                📖 Lire tout le document
-
-
+                <span>
+                    📖 Lire tout le document
+                </span>
             </label>
 
-
-
-            <br><br>
-
-
-
-            <button type="submit">
-
+            <button type="submit" id="submit-button">
                 Analyser le PDF
-
             </button>
 
-
+            <p id="chargement" hidden>
+                Analyse et génération de l’audio en cours…
+            </p>
 
         </form>
 
+        {% if resume %}
 
+        <section class="resultat">
 
+            <h2>📝 Résumé</h2>
 
+            <div class="box">
+                {{ resume }}
+            </div>
 
-        <h2>📝 Résumé</h2>
-
-
-
-        <div class="box">
-
-            {{ resume }}
-
-        </div>
-
-
-
-
-
-        {% if audio %}
-
-
-        <h2>🎧 Lecture audio</h2>
-
-
-        <audio controls>
-
-            <source src="/{{ audio }}" type="audio/mpeg">
-
-            Votre navigateur ne supporte pas l'audio.
-
-
-        </audio>
-
-
+        </section>
 
         {% endif %}
 
+        {% if audio %}
 
+        <section class="audio-container">
 
+            <h2>🔊 Lecture audio</h2>
 
+            <audio controls preload="metadata">
 
+                <source src="{{ url_for('static', filename=audio) }}" type="audio/mpeg">
 
+                Votre navigateur ne prend pas en charge la lecture audio.
 
-        <h2>📄 Texte extrait</h2>
+            </audio>
 
+            <a href="{{ url_for('static', filename=audio) }}" download class="download-button">
+                Télécharger l’audio
+            </a>
 
+        </section>
 
-        <div class="box texte">
+        {% endif %}
 
-            {{ texte }}
+        {% if texte %}
 
-        </div>
+        <section class="resultat">
 
+            <h2>📄 Texte extrait</h2>
 
+            <div class="box texte">
+                {{ texte }}
+            </div>
 
-    </div>
+        </section>
 
+        {% endif %}
 
-
-
+    </main>
 
     <footer class="footer">
-
-
         © 2026 PlayPdf — Tous droits réservés.
-
-
     </footer>
 
+    <script>
+        const formulaire = document.getElementById("pdf-form");
+        const bouton = document.getElementById("submit-button");
+        const chargement = document.getElementById("chargement");
 
+        formulaire.addEventListener("submit", function () {
+            bouton.disabled = true;
+            bouton.textContent = "Traitement en cours…";
+            chargement.hidden = false;
+        });
+    </script>
 
 </body>
-
 
 </html>
