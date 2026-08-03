@@ -3,3 +3,4 @@ gunicorn
 PyMuPDF
 edge-tts
 Werkzeug
+openai
